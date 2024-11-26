@@ -1,1 +1,25 @@
+on:
+  push:
+    branches:
+      - master
 
+
+
+
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Login to Docker"
+        run: docker login --username ${{ secrets.USER_NAME }} --password ${{ secrets.DOCKER_TOKEN}}
+      
+      - name: "Building docker image"
+        run: docker build -t ${{ secrets.USER_NAME }}/nayra .
+
+      - name: "Pushing to Docker hub"
+        run: docker push ${{ secrets.USER_NAME }}/nayra
